@@ -1,7 +1,7 @@
 # Linux Learning Repository
 
-> Auto-generated index. Last updated: 2026-03-17 22:54 UTC
-> 2 topic(s) · 15 subtopic file(s)
+> Auto-generated index. Last updated: 2026-03-23 00:37 UTC
+> 3 topic(s) · 16 subtopic file(s)
 
 ---
 
@@ -32,12 +32,19 @@
 | 8 | [Interrupts: How Hardware Talks to the Kernel](Linux-Kernel/08-Interrupts.md) | _Why Interrupts Matter for Trading, Two Levels: Hardirq vs Softirq, IRQ Affinity: Critical Rule +2 more_ |
 | 9 | [Trading Applications: Putting It All Together](Linux-Kernel/09-Trading-Applications-and-Tuning.md) | _The Critical Path Timeline, The Complete Tuning Surface, Diagnosing Issues by Symptom +1 more_ |
 
+### Terminal Tools
+
+| # | Subtopic | Covers |
+|---|----------|--------|
+| 1 | [Tmux: Complete Reference](Terminal-Tools/01-Tmux-Complete-Reference.md) | _What Tmux Is, Tmux vs iTerm2 — Why Tmux Wins for Coders, Architecture: Server / Client Model +9 more_ |
+
 ---
 
 ## Learning Log
 
 | Date (UTC) | Topic | Subtopic | Action |
 |---|---|---|---|
+| 2026-03-23 00:37 UTC | root | Linux Learning Repository — Claude Context | Added/Updated |
 | 2026-03-17 22:54 UTC | HRT-Interview-Prep | HRT: The Role and Interview Process | Added/Updated |
 | 2026-03-17 22:54 UTC | HRT-Interview-Prep | Linux Command Reference: HRT Level | Added/Updated |
 | 2026-03-17 22:54 UTC | HRT-Interview-Prep | Crisis Scenarios: 12 Live Investigation Walkthroughs | Added/Updated |
@@ -47,7 +54,6 @@
 | 2026-03-17 22:54 UTC | Linux-Kernel | The Linux Kernel: The Mental Model | Added/Updated |
 | 2026-03-17 22:54 UTC | Linux-Kernel | Process and Threads: How Code Runs on a CPU | Added/Updated |
 | 2026-03-17 22:54 UTC | Linux-Kernel | Memory: Virtual Memory, Paging, and the TLB | Added/Updated |
-| 2026-03-17 22:54 UTC | Linux-Kernel | The Scheduler: How the Kernel Decides Who Runs | Added/Updated |
 
 ---
 
