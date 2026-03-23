@@ -237,3 +237,145 @@ After editing `.tmux.conf`: `prefix + I` to install plugins.
 3. **Pair programming via tty**: two SSHers attach to same session (`tmux attach -t shared`) — both see same screen
 4. **Quick scratchpad**: `tmux new-window`, run something, close — back to main window
 5. **Monitoring dashboard**: one window with panes for `htop`, `nvidia-smi -l 1`, `tail -f train.log`, `df -h`
+
+---
+
+## Quick Reference Cheat Sheet (Prefix = Ctrl-a after setup)
+
+Use this section as a daily driver. All commands below assume you have remapped the prefix to `Ctrl-a` (see the next section).
+
+### Session Management
+
+| Shortcut | Action |
+|---|---|
+| `Ctrl-a`, then `d` | **Detach** — session keeps running in the background |
+| `Ctrl-a`, then `s` | **Select** a session from an interactive list |
+| `Ctrl-a`, then `$` | **Rename** the current session |
+| `tmux ls` | (in terminal) **List** all running sessions |
+| `tmux attach` | (in terminal) **Re-attach** to the last session |
+| `tmux attach -t name` | (in terminal) Re-attach to a **named** session |
+
+### Window Management (Tabs)
+
+| Shortcut | Action |
+|---|---|
+| `Ctrl-a`, then `c` | **Create** a new window |
+| `Ctrl-a`, then `w` | **Window list** — interactive switcher |
+| `Ctrl-a`, then `n` | **Next** window |
+| `Ctrl-a`, then `p` | **Previous** window |
+| `Ctrl-a`, then `0–9` | Jump to window by **number** |
+| `Ctrl-a`, then `,` | **Rename** the current window |
+| `Ctrl-a`, then `&` | **Kill** the current window (asks confirmation) |
+
+### Pane Management (Splits)
+
+| Shortcut | Action |
+|---|---|
+| `Ctrl-a`, then `%` | Split **vertically** (side by side) |
+| `Ctrl-a`, then `"` | Split **horizontally** (top and bottom) |
+| `Ctrl-a`, then `z` | **Zoom** — toggle current pane fullscreen |
+| `Ctrl-a`, then `x` | **Close** the current pane |
+| `Ctrl-a`, then `o` | Rotate focus to the **next pane** |
+| `Ctrl-a`, then `q` | Show **pane numbers** — type the number to jump |
+| `Ctrl-a`, then `Space` | Cycle through **layouts** (even-h, even-v, tiled…) |
+| `Ctrl-a`, then arrows | **Move** focus between panes |
+
+### Misc / Help
+
+| Shortcut | Action |
+|---|---|
+| `Ctrl-a`, then `?` | **Help** — lists every active keybinding |
+| `Ctrl-a`, then `[` | Enter **copy / scroll mode** — use arrows or Page Up/Down |
+| `Ctrl-a`, then `]` | **Paste** from tmux buffer |
+| `Ctrl-a`, then `:` | Open tmux **command prompt** |
+| `q` (in copy mode) | **Exit** copy mode |
+
+**Daily workflow recap:**
+```
+tmux               # start a new session
+Ctrl-a → %         # split vertically
+Ctrl-a → "         # split horizontally
+Ctrl-a → z         # zoom a pane fullscreen
+Ctrl-a → d         # detach (session lives on)
+tmux attach        # come back later — everything exactly as left
+```
+
+---
+
+## Changing the Default Prefix (Power User Setup)
+
+The default prefix is `Ctrl-b`, but the keys are far apart and conflict with shell navigation shortcuts. Most developers on Mac remap it to `Ctrl-a`. This section walks through the exact steps.
+
+### Step 1 — Open (or create) the config file
+
+```bash
+nano ~/.tmux.conf
+```
+
+### Step 2 — Paste the essential configuration
+
+```bash
+# ── Prefix ──────────────────────────────────────────────
+# Change prefix from Ctrl-b to Ctrl-a (screen-style, easier on fingers)
+unbind C-b
+set-option -g prefix C-a
+bind-key C-a send-prefix
+
+# ── Mouse ───────────────────────────────────────────────
+# Enable mouse mode: click to focus panes, drag to resize, scroll to scroll
+set -g mouse on
+
+# ── Splits ──────────────────────────────────────────────
+# More intuitive split keys (opens in current directory)
+bind | split-window -h -c "#{pane_current_path}"
+bind - split-window -v -c "#{pane_current_path}"
+
+# ── Vim-style pane navigation ───────────────────────────
+# Move between panes with h/j/k/l after prefix
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
+
+# ── Reload shortcut ─────────────────────────────────────
+# prefix + r reloads this file and shows a confirmation
+bind r source-file ~/.tmux.conf \; display "Config reloaded"
+```
+
+### Step 3 — Save and exit nano
+
+Press `Ctrl-o`, then `Enter` to save.
+Press `Ctrl-x` to exit.
+
+### Step 4 — Apply the changes
+
+If tmux is **already running**, reload without restarting:
+
+```bash
+tmux source-file ~/.tmux.conf
+```
+
+Or from inside tmux after step 2 is done: `Ctrl-a`, then `r` (once the reload bind is active).
+
+If tmux is **not running**, just start a new session — the config is read automatically:
+
+```bash
+tmux new -s work
+```
+
+### Verify it worked
+
+Press `Ctrl-a`, then `?` — you should see the full keybinding list including your new `|` and `-` split keys. Press `q` to close.
+
+### What each setting does
+
+| Setting | Effect |
+|---|---|
+| `unbind C-b` | Removes the default `Ctrl-b` prefix |
+| `set-option -g prefix C-a` | Sets the new prefix globally |
+| `bind-key C-a send-prefix` | Lets you send a literal `Ctrl-a` to applications (e.g. bash history) by pressing it twice |
+| `set -g mouse on` | Enables click-to-focus, drag-to-resize, and trackpad scrolling |
+| `bind \| split-window -h` | Splits vertically with `prefix + \|` (mnemonic: vertical bar = vertical split) |
+| `bind - split-window -v` | Splits horizontally with `prefix + -` (mnemonic: dash = horizontal line) |
+| `bind h/j/k/l select-pane` | Vim-style navigation after the prefix |
+| `bind r source-file` | Reloads config in-place without restarting tmux |
